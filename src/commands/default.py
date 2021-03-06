@@ -3,6 +3,7 @@ from discord.ext import commands
 
 from src.utils import emoji_check, make_text_embed
 from src.utils.colors import RED, YELLOW, ORANGE
+from src.utils.logger import Logger
 
 import traceback
 
@@ -10,6 +11,7 @@ import traceback
 class Default(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.logger = Logger.cogLogger(self)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, err: Exception):

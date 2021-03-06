@@ -13,6 +13,7 @@ from src.utils.database import get_stock_info
 from src.utils.classes import GameUser
 from src.utils.embeds import make_text_embed
 from src.utils.decorators import require_join
+from src.utils.logger import Logger
 
 from typing import List
 from random import randint
@@ -25,6 +26,7 @@ from datetime import datetime
 class Stock(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.logger = Logger.cogLogger(self)
         self.stock_change_loop.change_interval(
             seconds=bot.config["game"]["stock"]["stock_change_time"]
         )

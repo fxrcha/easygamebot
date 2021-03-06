@@ -1,6 +1,10 @@
 import sqlite3
 from typing import List, Dict, Union
+from src.utils.logger import Logger
 import json
+
+
+logger = Logger.defaultLogger("DB")
 
 
 def connect_database(path: str) -> sqlite3.Connection:
@@ -9,7 +13,7 @@ def connect_database(path: str) -> sqlite3.Connection:
 
     cur.execute("SELECT COUNT(*) FROM sqlite_master WHERE name='users'")
     if cur.fetchone()[0] == 0:
-        print("DB 셋업 (users)")
+        logger.info("DB 셋업 (users)")
         cur.execute(
             "CREATE TABLE users ("
             "id text, money text, items integer,"
@@ -19,7 +23,7 @@ def connect_database(path: str) -> sqlite3.Connection:
 
     cur.execute("SELECT COUNT(*) FROM sqlite_master WHERE name='stocks'")
     if cur.fetchone()[0] == 0:
-        print("DB 셋업 (stocks)")
+        logger.info("DB 셋업 (stocks)")
         cur.execute(
             "CREATE TABLE stocks(name text, price text, cap text, history text)"
         )
@@ -50,7 +54,7 @@ def init_stock(con: sqlite3.Connection, stocks: List[str], stock_default_price: 
 
     if del_stocks:
         for i in del_stocks:
-            print(f"주식 [{i}] 삭제")
+            logger.info(f"주식 [{i}] 삭제")
             cur.execute("DELETE FROM stocks WHERE name=?", (i,))
 
         cur.execute("SELECT * FROM users")
@@ -70,7 +74,7 @@ def init_stock(con: sqlite3.Connection, stocks: List[str], stock_default_price: 
 
     if create_stocks:
         for i in create_stocks:
-            print(f"주식 [{i}] 생성")
+            logger.info(f"주식 [{i}] 생성")
             cur.execute(
                 "INSERT INTO stocks VALUES (?, ?, ?, ?)",
                 (i, str(stock_default_price), "0", "[]"),
@@ -105,4 +109,5 @@ def get_stock_info(
             "cap": int(data[2]),
             "history": json.loads(data[3]),
         }
+    logger.error(f"Not Found Stock: {name}")
     raise NameError(f"Not Found Stock: {name}")

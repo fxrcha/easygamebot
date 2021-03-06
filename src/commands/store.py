@@ -3,11 +3,13 @@ from discord.ext import commands
 
 from src.utils import make_text_embed, format_money, colors, one_more_check
 from src.utils.classes import Item, Items, GameUser
+from src.utils.logger import Logger
 
 
 class Store(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.logger = Logger.cogLogger(self)
 
     @commands.command("상점")
     async def item_store(self, ctx: commands.Context, *, name: str = None):

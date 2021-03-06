@@ -5,6 +5,7 @@ from src.utils import format_money, seconds_to_timestr
 from src.utils.classes import GameUser, ItemEffect
 from src.utils.embeds import make_text_embed
 from src.utils.decorators import require_join
+from src.utils.logger import Logger
 
 from typing import Dict
 from time import time
@@ -14,6 +15,7 @@ from random import randint
 class Game(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.logger = Logger.cogLogger(self)
         self.cooldown: Dict[int, float] = {}
 
     @commands.command("일", aliases=["ㅇ"])

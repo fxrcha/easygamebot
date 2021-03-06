@@ -3,6 +3,7 @@ from discord.ext import commands
 
 from src.utils import colors, timestamp_to_timestr, seconds_to_timestr, format_money
 from src.utils.classes import GameUser
+from src.utils.logger import Logger
 from src.utils.embeds import make_text_embed
 from src.utils.decorators import require_join
 
@@ -12,6 +13,7 @@ import time
 class User(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.logger = Logger.cogLogger(self)
 
     @commands.command("가입")
     async def join_user(self, ctx: commands.Context):

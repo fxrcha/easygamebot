@@ -1,9 +1,67 @@
 import logging
-
+import sys
 import discord
 
 FORMATTER = logging.Formatter(
     "[%(asctime)s] [%(filename)s] [%(name)s:%(module)s] [%(levelname)s]: %(message)s"
+)
+
+SANIC_CONFIG = dict(
+    version=1,
+    disable_existing_loggers=False,
+    loggers={
+        "sanic.root": {"level": "INFO", "handlers": ["console", "file_generic"]},
+        "sanic.error": {
+            "level": "INFO",
+            "handlers": ["error_console", "file_generic"],
+            "propagate": True,
+            "qualname": "sanic.error",
+        },
+        "sanic.access": {
+            "level": "INFO",
+            "handlers": ["access_console", "file_access"],
+            "propagate": True,
+            "qualname": "sanic.access",
+        },
+    },
+    handlers={
+        "file_generic": {
+            "class": "logging.FileHandler",
+            "formatter": "generic",
+            "filename": "logs/sanic_generic.txt",
+        },
+        "file_access": {
+            "class": "logging.FileHandler",
+            "formatter": "access",
+            "filename": "logs/sanic_access.txt",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "generic",
+            "stream": sys.stdout,
+        },
+        "error_console": {
+            "class": "logging.StreamHandler",
+            "formatter": "generic",
+            "stream": sys.stderr,
+        },
+        "access_console": {
+            "class": "logging.StreamHandler",
+            "formatter": "access",
+            "stream": sys.stdout,
+        },
+    },
+    formatters={
+        "generic": {
+            "format": "[%(asctime)s] [%(filename)s] [%(name)s:%(module)s] [%(levelname)s]: %(message)s",
+            "class": "logging.Formatter",
+        },
+        "access": {
+            "format": "[%(asctime)s] [%(filename)s] [%(name)s:%(module)s] [%(levelname)s]: "
+            + "%(request)s %(message)s %(status)d %(byte)d",
+            "class": "logging.Formatter",
+        },
+    },
 )
 
 

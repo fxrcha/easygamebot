@@ -1,6 +1,7 @@
 from sanic import Sanic, response
+from src.utils.logger import SANIC_CONFIG
 
-app = Sanic(__name__)
+app = Sanic(__name__, log_config=SANIC_CONFIG)
 
 
 app.static("/assets", "src/web/assets/")

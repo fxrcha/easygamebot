@@ -9,14 +9,13 @@ from src.utils.logger import Logger
 
 class EasyGameBot(commands.Bot):
     def __init__(self):
-        config = get_config()
+        self.config = get_config()
         super().__init__(
-            command_prefix=config["bot"]["prefix"],
+            command_prefix=self.config["bot"]["prefix"],
             intents=discord.Intents.all(),
             activity=discord.Game(self.config["bot"]["status"]),
             help_command=None,
         )
-        self.config = config
         self.discord = Logger.discordLogger()
         self.logger = Logger.defaultLogger("EasyGameBot")
 

@@ -10,6 +10,8 @@ from src.utils.logger import Logger
 class EasyGameBot(commands.Bot):
     def __init__(self):
         self.config = get_config()
+        if not os.isdir("logs"):
+            os.mkdir("logs")
         super().__init__(
             command_prefix=self.config["bot"]["prefix"],
             intents=discord.Intents.all(),
